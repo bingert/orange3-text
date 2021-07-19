@@ -9,14 +9,14 @@ from orangecontrib.text.corpus import Corpus
 from orangecontrib.text.language_codes import lang2code, code2lang
 from orangecontrib.text.widgets.utils import ComboBox, ListEdit, CheckListLayout, asynchronous
 
-from orangecontrib.text.mineKopie import MineAPI
+from orangecontrib.text.mine import MineAPI
 
 
 
 
 class OWMine(OWWidget):
     """ Get articles from Mine. """
-    name = 'Minekopie'
+    name = 'Mine'
     priority = 160
     icon = 'icons/MINE-Logo-orange.svg'
 
