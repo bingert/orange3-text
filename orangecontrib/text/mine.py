@@ -476,7 +476,7 @@ class MineAPI:
                 return []
         
         
-        return Corpus.from_documents(results, 'mineKopie', self.attributes,
+        return Corpus.from_documents(results, 'mine', self.attributes,
                                             self.class_vars, self.metas, title_indices=[-1])
         
         
