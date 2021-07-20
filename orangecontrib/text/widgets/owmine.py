@@ -43,29 +43,6 @@ class OWMine(OWWidget):
 
     class Warning(OWWidget.Warning):
         no_text_fields = Msg('Text features are inferred when none are selected.')
-    
-    class CredentialsDialog(OWWidget):
-        name = 'The Mine Credentials'
-        want_main_area = False
-        resizing_enabled = False
-        cm_key = CredentialManager('The Mine API Key')
-        key_input = 'test'
-
-        class Error(OWWidget.Error):
-            invalid_credentials = Msg('These credentials are invalid.')
-
-        def __init__(self, parent):
-            super().__init__()
-            self.parent = parent
-            self.api = None
-
-            form = QFormLayout()
-            form.setContentsMargins(5, 5, 5, 5)
-            self.key_edit = gui.lineEdit(self, self, 'key_input', controlWidth=350)
-            form.addRow('Key:', self.key_edit)
-            self.controlArea.layout().addLayout(form)
-            self.submit_button = gui.button(self.controlArea, self, 'OK', self.accept)
-
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
