@@ -16,7 +16,7 @@ from orangecontrib.text.mine import MineAPI
 
 class OWMine(OWWidget):
     """ Get articles from Mine. """
-    name = 'line'
+    name = 'Mine'
     priority = 160
     icon = 'icons/MINE-Logo-orange.svg'
 
