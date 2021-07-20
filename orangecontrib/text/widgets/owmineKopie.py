@@ -4,6 +4,7 @@ from AnyQt.QtWidgets import QApplication, QGridLayout, QLabel
 from Orange.widgets import gui
 from Orange.widgets import settings
 from Orange.widgets.widget import OWWidget, Msg, Output
+
 from orangecontrib.text.corpus import Corpus
 from orangecontrib.text.language_codes import lang2code, code2lang
 from orangecontrib.text.widgets.utils import ComboBox, ListEdit, CheckListLayout, asynchronous
@@ -15,7 +16,7 @@ from orangecontrib.text.mineKopie import MineAPI
 
 class OWMine(OWWidget):
     """ Get articles from Mine. """
-    name = 'Minekopie'
+    name = 'Mine'
     priority = 160
     icon = 'icons/MINE-Logo-orange.svg'
 
@@ -47,7 +48,7 @@ class OWMine(OWWidget):
         super().__init__(*args, **kwargs)
 
         self.api = MineAPI(on_error=self.Error.api_error)
-        self.result = None
+        self.corpus = None
 
         query_box = gui.hBox(self.controlArea, 'Query')
 

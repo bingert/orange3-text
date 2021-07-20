@@ -1,10 +1,6 @@
-from __future__ import unicode_literals
 
 import requests
-import time
-from bs4 import BeautifulSoup
-from datetime import datetime, timedelta
-from decimal import Decimal
+
 
 from Orange import data
 from orangecontrib.text import Corpus
@@ -35,40 +31,6 @@ def set_lang(prefix):
     for cached_func in (search, suggest):
         pass
 
-
-def set_rate_limiting(rate_limit, min_wait=timedelta(milliseconds=50)):
-    '''
-  Enable or disable rate limiting on requests to the Mediawiki servers.
-  If rate limiting is not enabled, under some circumstances (depending on
-  load on Mine, the number of requests you and other `Orange` users
-  are making, and other factors), Mine-UI may return an HTTP timeout error.
-
-  Enabling rate limiting generally prevents that issue, but please note that
-  HTTPTimeoutError still might be raised.
-
-  Arguments:
-
-  * rate_limit - (Boolean) whether to enable rate limiting or not
-
-  Keyword arguments:
-
-  * min_wait - if rate limiting is enabled, `min_wait` is a timedelta describing the minimum time to wait before requests.
-         Defaults to timedelta(milliseconds=50)
-  '''
-    global RATE_LIMIT
-    global RATE_LIMIT_MIN_WAIT
-    global RATE_LIMIT_LAST_CALL
-
-    RATE_LIMIT = rate_limit
-    if not rate_limit:
-        RATE_LIMIT_MIN_WAIT = None
-    else:
-        RATE_LIMIT_MIN_WAIT = min_wait
-
-    RATE_LIMIT_LAST_CALL = None
-
-
-
 def search(query, results=10, suggestion=False):
     '''
   Do a Mine search for `query`.
@@ -98,10 +60,6 @@ def search(query, results=10, suggestion=False):
         else:
             raise WikipediaException(raw_results['error']['info'])
     #search_title = (d['_source']['origin']['title'] for d in raw_results['hits']['hits'])
-    print('WWWWWWWWWWWW')
-    print(raw_results)
-    print('FFFFFFFFFFFF')
-    print(' ')
     
     return raw_results
     
@@ -143,6 +101,7 @@ def page(title, pageid=None, auto_suggest=True, redirect=True, preload=False):
   '''
     title_tmp = title
     auto_suggest = False
+    
     if title is not None:
         if auto_suggest:
             results, suggestion = search(title, results=1, suggestion=True)
@@ -151,6 +110,7 @@ def page(title, pageid=None, auto_suggest=True, redirect=True, preload=False):
             except IndexError:
                 # if there is no suggestion or search results, the page doesn't exist
                 raise PageError(title)
+        
         return MinePage(title)
   
   
@@ -301,10 +261,6 @@ class MinePage(object):
     '''
         title = self.title['_source']['mine']['dc_date']
         self._date = title
-        print('WWWWWWWWWWWW')
-        print(self._date)
-        print('FFFFFFFFFFFF')
-        print(' ')
         return self._date
         
     
@@ -453,13 +409,11 @@ def _wiki_request(params):
 
     if RATE_LIMIT:
         RATE_LIMIT_LAST_CALL = datetime.now()
-    print('WWWWWWWWWWWW')
-    print(r.json())
-    print('FFFFFFFFFFFF')
-    print(' ')
+    
     return r.json()['hits']['hits']
 
 class MineAPI:
+    
     """ Wraps Mine API.
 
     Examples:
@@ -478,6 +432,7 @@ class MineAPI:
         (data.StringVariable('Resource'), lambda doc: getattr(doc, 'resource')),
         (data.DiscreteVariable('Query'), lambda doc: getattr(doc, 'query')),
     ]
+   
 
     attributes = []
     class_vars = []
@@ -500,7 +455,7 @@ class MineAPI:
             on_progress (callable): Callback for progress bar.
         """
        
-        .set_lang(lang)
+        set_lang(lang)
 
         results = []
         for i, query in enumerate(queries):
@@ -517,29 +472,30 @@ class MineAPI:
                     if callable(on_progress):
                         on_progress((i*articles_per_query + j+1) / (len(queries) * articles_per_query),
                                     len(results))
+            except:
+                return []
         
         
         return Corpus.from_documents(results, 'mineKopie', self.attributes,
                                             self.class_vars, self.metas, title_indices=[-1])
         
         
-def _get(self, article, query, should_break, recursive=True):
+    def _get(self, article, query, should_break, recursive=True):
         try:
-            article = mine.page(article)
+            article = page(article)
         
             article.query = query
             
             return [article]
-        except .exceptions.DisambiguationError:
+        except DisambiguationError:
             res = []
             if recursive:
-                for article in mine.search(article, 20):
+                for article in search(article, 20):
                     if callable(should_break) and should_break():
                         break
                     res.extend(self._get(article, query, should_break, recursive=False))
                         
             return res
     
-        except .exceptions.PageError:
+        except PageError:
             return []
-            #return []
