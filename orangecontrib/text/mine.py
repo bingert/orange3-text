@@ -6,15 +6,41 @@ from Orange import data
 from orangecontrib.text import Corpus
 
 
-
+import json
 import re
 
-#API_URL = 'https://mine-graph.de/api/search'
+API_URL = 'https://mine-graph.de/api/search'
 RATE_LIMIT = False
 RATE_LIMIT_MIN_WAIT = None
 RATE_LIMIT_LAST_CALL = None
 
+class MineCredentials:
+    """ The Guardian API credentials. """
+    def __init__(self, key):
+        """
+        Args:
+            key (str): The Guardian API key. Use `test` for testing purposes.
+        """
+        self.key = key
 
+    @property
+    def valid(self):
+        """ Check if given API key is valid. """
+        print('WWWWWWWWWWWW')
+        print(self.key)
+        print('FFFFFFFFFFFF')
+        print(' ')
+        response = requests.get('https://mine-graph.de/api/search', {'token': self.key})
+        return True
+    
+    def key(self, key):
+        if valid:
+            return self.key
+        elif:
+            print('Token not Valid')
+
+    def __eq__(self, other):
+        return self.key == other.key
 
 def set_lang(prefix):
     '''
@@ -51,6 +77,7 @@ def search(query, results=10, suggestion=False):
         'a': False,
         'p': 1,
         's': results
+        
     }
     
     raw_results = _wiki_request(search_params)
@@ -60,7 +87,10 @@ def search(query, results=10, suggestion=False):
         else:
             raise WikipediaException(raw_results['error']['info'])
     #search_title = (d['_source']['origin']['title'] for d in raw_results['hits']['hits'])
-    
+    print('WWWWWWWWWWWW55')
+    print(raw_results)
+    print('FFFFFFFFFFFF55')
+    print(' ')
     return raw_results
     
 
@@ -284,6 +314,17 @@ class MinePage(object):
         self._title = title_tmp
         return self._title
         
+    @property
+    def token_content(self):
+        '''
+    only with Token
+    '''
+        try:
+            title_tmp = self.title['_source']['content']
+            self._token_content = title_tmp
+            return self._token_content
+        except KeyError:
+            return 'content not available'
    
     @property
     def authors(self):
@@ -379,8 +420,7 @@ def languages():
 
     return {
         lang['code']: lang['*']
-        for lang in languages
-    }
+        for lang in languages}
 
 def _wiki_request(params):
     '''
@@ -395,6 +435,7 @@ def _wiki_request(params):
         
     headers = {
         'Content-type': 'application/json'
+        
     }
 
     if RATE_LIMIT and RATE_LIMIT_LAST_CALL and \
@@ -433,17 +474,17 @@ class MineAPI:
         (data.DiscreteVariable('Query'), lambda doc: getattr(doc, 'query')),
     ]
    
-
+    
     attributes = []
     class_vars = []
-    text_features = [m for m, _ in metas]
-    string_attributes = [m for m, _ in metas if isinstance(m, data.StringVariable)]
+    text_features = (m for m, _ in metas)
+    string_attributes = (m for m, _ in metas if isinstance(m, data.StringVariable))
 
     def __init__(self, on_error=None):
         super().__init__()
         self.on_error = on_error or (lambda x: x)
-
-    def search(self, lang, queries, articles_per_query=10, should_break=None, on_progress=None):
+        self.credentials = MineCredentials
+    def search(self, token, lang, queries, articles_per_query=10, should_break=None, on_progress=None):
         """ Searches for articles.
 
         Args:
