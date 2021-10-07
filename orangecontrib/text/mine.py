@@ -36,7 +36,7 @@ class MineCredentials:
     def key(self, key):
         if valid:
             return self.key
-        elif:
+        else:
             print('Token not Valid')
 
     def __eq__(self, other):
