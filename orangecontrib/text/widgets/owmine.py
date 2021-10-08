@@ -257,8 +257,8 @@ class OWMine(OWWidget):
 
 if __name__ == '__main__':
     #key = os.getenv('THE_GUARDIAN_API_KEY', 'test')
-    #credentials = MineCredentials(key)
-    #api = MineAPI(credentials=credentials)
+    credentials = MineCredentials(key)
+    api = MineAPI(credentials=credentials)
     app = QApplication([])
     widget = OWMine()
     widget.show()
