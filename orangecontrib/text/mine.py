@@ -76,8 +76,8 @@ def search(query, results=10, suggestion=False):
         'q': query,
         'a': False,
         'p': 1,
-        's': results
-        
+        's': results,
+        'token': MineCredentials.key
     }
     
     raw_results = _wiki_request(search_params)
@@ -289,7 +289,7 @@ class MinePage(object):
         '''
     Dates, on which the papers got published
     '''
-        title = self.title['_source']['mine']['dc_date']
+        title = self.title['_source']['mine']['year']
         self._date = title
         return self._date
         
