@@ -76,8 +76,8 @@ def search(query, results=10, suggestion=False):
         'q': query,
         'a': False,
         'p': 1,
-        's': results,
-        'token': MineCredentials.key
+        's': results
+        
     }
     
     raw_results = _wiki_request(search_params)
@@ -472,6 +472,7 @@ class MineAPI:
         #(data.ContinuousVariable('Revision ID', number_of_decimals=0), lambda doc: int(getattr(doc, 'revision_id'))),
         (data.StringVariable('Resource'), lambda doc: getattr(doc, 'resource')),
         (data.DiscreteVariable('Query'), lambda doc: getattr(doc, 'query')),
+        (data.StringVariable('content'), lambda doc: getattr(doc, 'token_content')),
     ]
    
     
