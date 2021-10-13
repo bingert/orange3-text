@@ -46,10 +46,6 @@ class OWMine(OWWidget):
 
         def save_credentials(self):
             self.cm_key.key = self.key_input
-            print('WWWWWWWWWWWW77')
-            print(self.cm_key.key)
-            print('FFFFFFFFFFFF77')
-            print(' ')
 
         def check_credentials(self):
             api = MineCredentials(self.key_input)
@@ -179,10 +175,7 @@ class OWMine(OWWidget):
     
     def token(self):
         token = MineCredentials.key
-        print('WWWWWWWWWWWW88')
-        print(token)
-        print('FFFFFFFFFFFF88')
-        print(' ')
+        
         return token
     
     def update_api(self, api):
@@ -237,10 +230,10 @@ class OWMine(OWWidget):
             self.Warning.no_text_fields()
 
         if self.result is not None:
-            print('WWWWWWWWWWWW44')
-            print(self.result)
-            print('FFFFFFFFFFFF44')
-            print(' ')
+            #print('WWWWWWWWWWWW44')
+            #print(self.result)
+            #print('FFFFFFFFFFFF44')
+            #print(' ')
             vars_ = [var for var in self.result.domain.metas if var.name in self.text_includes]
             self.result.set_text_features(vars_ or None)
             self.Outputs.corpus.send(self.result)
