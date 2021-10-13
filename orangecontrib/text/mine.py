@@ -472,7 +472,7 @@ class MineAPI:
         #(data.ContinuousVariable('Revision ID', number_of_decimals=0), lambda doc: int(getattr(doc, 'revision_id'))),
         (data.StringVariable('Resource'), lambda doc: getattr(doc, 'resource')),
         (data.DiscreteVariable('Query'), lambda doc: getattr(doc, 'query')),
-        (data.StringVariable('content'), lambda doc: getattr(doc, 'token_content')),
+        (data.StringVariable('Content'), lambda doc: getattr(doc, 'token_content')),
     ]
    
     
