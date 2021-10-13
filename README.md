@@ -74,4 +74,4 @@ or
 
 	orange-canvas
 
-The new widgets are in the toolbox bar under Text Mining section.
+The new widgets are in the toolbox bar under Text Mining section..
